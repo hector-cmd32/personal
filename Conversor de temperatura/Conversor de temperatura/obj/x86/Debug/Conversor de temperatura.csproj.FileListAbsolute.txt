@@ -1,0 +1,7 @@
+C:\share\S4\Conversor de temperatura\Conversor de temperatura\bin\Debug\Conversor de temperatura.exe
+C:\share\S4\Conversor de temperatura\Conversor de temperatura\bin\Debug\Conversor de temperatura.pdb
+C:\share\S4\Conversor de temperatura\Conversor de temperatura\obj\x86\Debug\WindowsFormsApplication1.Form1.resources
+C:\share\S4\Conversor de temperatura\Conversor de temperatura\obj\x86\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\share\S4\Conversor de temperatura\Conversor de temperatura\obj\x86\Debug\Conversor de temperatura.csproj.GenerateResource.Cache
+C:\share\S4\Conversor de temperatura\Conversor de temperatura\obj\x86\Debug\Conversor de temperatura.exe
+C:\share\S4\Conversor de temperatura\Conversor de temperatura\obj\x86\Debug\Conversor de temperatura.pdb
