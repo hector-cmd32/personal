@@ -112,3 +112,5 @@ C:\share\S6\cliente_con_conexion_desconexion_exclusión\WindowsFormsApplication1
 C:\share\S6\cliente_con_conexion_desconexion_exclusión\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 C:\share\S6\cliente_con_conexion_desconexion_exclusión\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\share\S6\cliente_con_conexion_desconexion_exclusión\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache
+C:\Users\Héctor\Documents\Universidad\Quadri 2020-1\Sistemes Operatius\Repositorio Personal\cliente_con_conexion_desconexion_exclusión\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\Héctor\Documents\Universidad\Quadri 2020-1\Sistemes Operatius\Repositorio Personal\cliente_con_conexion_desconexion_exclusión\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb

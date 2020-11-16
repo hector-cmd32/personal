@@ -8,10 +8,90 @@
 #include <ctype.h>
 #include <pthread.h>
 
+
+typedef struct{
+	
+	char name[20];
+	int sock;
+	
+}TUser;
+
+
+typedef struct{
+	
+	int num;
+	TUser user[40];
+	
+}TListaUsers;
+
+TListaUsers lista_usuarios;
+
 int contador; //Tiene que ser global para que todos los threads puedean incrementarlos
 
 //Estructura necesaria para acceso excluyente
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+int Pon(TListaUsers *lista, char nombre[20], int socket){
+	//Añade nuevo usuario. Retorna 0  si ok y -1 si la lista ya esta llena
+	//y no se puede añadir
+	
+	if (lista->num == 40)
+		
+		return -1;
+		
+	else{
+		
+		strcpy(lista->user[lista->num].name, nombre);
+		lista->user[lista->num].sock = socket;
+		lista->num = lista->num + 1;
+		return 0;
+		
+	}
+}
+	
+int Eliminar(TListaUsers *lista, char nombre[20]){
+	//Retorna 0 si elimina y -1 si dicho usuario no está en la lista
+	
+	int i = 0;
+	int encontrado = 0;
+	
+	while ((i < lista->num) && (!encontrado)){
+		
+		if (strcmp(lista->user[i].name, nombre) == 0)
+			encontrado = 1;
+		if (!encontrado)
+			i = i + 1;
+	}
+	if (encontrado == 1){
+		
+		int j;
+		for(j = i; j < lista->num-1; j++){
+			
+			strcpy(lista->user[j].name, lista->user[j+1].name);
+			lista->user[j].sock = lista->user[j+1].sock;
+		}
+		lista->num--;
+		return 0;
+	}
+	else
+		return -1;
+	
+}
+
+void DameConectados (TListaUsers *lista, char conectados[400]){
+	//Recibe la lista de conectados y retorna un vector de caracteres con los nombres
+	//separados por /. --> "3/Juan/Maria/Pedro"
+	
+	sprintf(conectados, "%d", lista->num);
+	
+	int i;
+	
+	for (i = 0; i < lista->num; i++){
+		
+		sprintf(conectados, "%s/%s", conectados, lista->user[i].name);
+		
+	}		
+}
 
 void *AtenderCliente(void *socket){
 
@@ -22,6 +102,7 @@ void *AtenderCliente(void *socket){
 	
 	char peticion[512];
 	char respuesta[512];
+	char user_name[20];
 	
 	int ret;
 	int terminar = 0;
@@ -54,11 +135,39 @@ void *AtenderCliente(void *socket){
 			strcpy (nombre, p);
 			// Ya tenemos el nombre
 			printf ("Codigo: %d, Nombre: %s\n", codigo, nombre);
+			
+			//Añadimos el nuevo usuario a la lista
+			
+			pthread_mutex_lock(&mutex); //No me interrumpas ahora
+				
+			Pon(&lista_usuarios, user_name, sock_conn);
+				
+			pthread_mutex_unlock(&mutex); //Ya me puedes interrumpir
+			
+			//Hacemos que cada vez que entra un nuevo usuario, se muestren
+			//en el servidor los usuarios conectados
+			
+			char listado_usuarios[400];
+			
+			DameConectados(&lista_usuarios, listado_usuarios);
+			
+			printf("%s \n", listado_usuarios);
+			
 		}
 		
-		if (codigo ==0) //petici?n de desconexi?n
+		if (codigo ==0){//petici?n de desconexi?n
 			
 			terminar=1;
+			
+			//Eliminamos al usuario que quiere salir del servidor
+			
+			pthread_mutex_lock(&mutex); //No me interrumpas ahora
+			
+			Eliminar(&lista_usuarios, user_name);
+			
+			pthread_mutex_unlock(&mutex); //Ya me puedes interrumpir
+			
+		}
 		
 		else if (codigo ==1) //piden la longitd del nombre
 			
@@ -155,6 +264,8 @@ int main(int argc, char *argv[])
 	
 	int sockets[100];
 	pthread_t thread[100];
+	
+	lista_usuarios.num = 0;
 	
 	contador = 0;
 	
