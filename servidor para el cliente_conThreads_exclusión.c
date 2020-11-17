@@ -138,6 +138,8 @@ void *AtenderCliente(void *socket){
 			
 			//Añadimos el nuevo usuario a la lista
 			
+			strcpy(user_name, nombre);
+			
 			pthread_mutex_lock(&mutex); //No me interrumpas ahora
 				
 			Pon(&lista_usuarios, user_name, sock_conn);
@@ -285,7 +287,7 @@ int main(int argc, char *argv[])
 	//htonl formatea el numero que recibe al formato necesario
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
 	// establecemos el puerto de escucha
-	serv_adr.sin_port = htons(9020);
+	serv_adr.sin_port = htons(9040);
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0)
 		
 		printf ("Error al bind");
